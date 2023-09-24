@@ -2,14 +2,24 @@
 const express = require("express");
 const port = 5000;
 const app = express();
+
+const movies = [
+  { title: 'Jaws', year: 1975, rating: 8 },
+  { title: 'Avatar', year: 2009, rating: 7.8 },
+  { title: 'Brazil', year: 1985, rating: 8 },
+  { title: 'الإرهاب والكباب‎', year: 1992, rating: 6.2 },
+];
 // when opennig the local it answers with ok
 app.get("/", (req, res) => {
   res.send("Ok ");
 });
+
 app.listen(5000, () => {
   console.log("running the server ");
 });
+
 app.get("/test", (req, res) =>{
+
     res.send({ status: 200, message: "ok" })
 })
 app.get('/time',(req,res)=>{
@@ -29,4 +39,17 @@ app.get('/search', (req, res) => {
   } else {
     res.status(500).json({ status: 500, error: true, message: 'You have to provide a search' });
   }
+});
+app.get('/movies/create', (req, res) => {
+  res.status(200).json({ status: 200, message: 'Create a movie' });
+});
+
+app.get('/movies/read', (req, res) => {
+  res.status(200).json({ status: 200, data: movies });
+});
+app.get('/movies/update', (req, res) => {
+  res.status(200).json({ status: 200, message: 'Update a movie' });
+});
+app.get('/movies/delete', (req, res) => {
+  res.status(200).json({ status: 200, message: 'Delete a movie' });
 });
