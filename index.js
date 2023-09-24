@@ -2,7 +2,6 @@
 const express = require("express");
 const port = 5000;
 const app = express();
-
 const movies = [
   { title: 'Jaws', year: 1975, rating: 8 },
   { title: 'Avatar', year: 2009, rating: 7.8 },
@@ -47,20 +46,25 @@ app.get('/movies/update', (req, res) => {
 app.get('/movies/delete', (req, res) => {
   res.status(200).json({ status: 200, message: 'Delete a movie' });
 });
-
 app.get('/movies/read/by-date', (req, res) => {
   const ByDate = movies.sort((a, b) => a.year - b.year);
   res.status(200).json({ status: 200, data: ByDate });
 });
-
-
 app.get('/movies/read/by-rating', (req, res) => {
   const ByRating = movies.sort((a, b) => b.rating - a.rating);
   res.status(200).json({ status: 200, data: ByRating });
 });
-
-
 app.get('/movies/read/by-title', (req, res) => {
   const ByTitle = movies.sort((a, b) => a.title.localeCompare(b.title));
   res.status(200).json({ status: 200, data: ByTitle });
+});
+app.get('/movies/read/id/:id', (req, res) => {
+  const { id } = req.params;
+  const movie = movies.find((movie) => movie.id === parseInt(id));
+
+  if (movie) {
+    res.status(200).json({ status: 200, data: movie });
+  } else {
+    res.status(404).json({ status: 404, error: true, message: `The movie ${id} does not exist` });
+  } 
 });
