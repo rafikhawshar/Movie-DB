@@ -111,4 +111,35 @@ app.get('/movies/delete/:id', (req,res)=>{
       movies.splice(id-1, 1);
       res.status(200).json(movies)
   }
-})
+})  
+app.get("/movies/update/:id", (request, response) => {
+  const id = parseInt(request.params.id) - 1;
+  const EditedTitle = request.query.title;
+  const EditedYear = parseInt(request.query.year);
+  const EditedRate = parseFloat(request.query.rating); 
+  
+  if (movies[id] === undefined) {
+    return response.status(404).send({
+      status: 404, error: true, message: `the movie ${id + 1} does not exist`,
+    });
+  }
+  
+  if (!Number.isNaN(EditedRate)) {
+    if (EditedRate < 0 || EditedRate > 10) { 
+      return response.status(400).send({
+        status: 400, error: true, message: 'Rating must be a number less than 10',
+      });
+    }
+    movies[id].rating = EditedRate;
+  }
+  
+  if (EditedTitle != undefined) {
+    movies[id].title = EditedTitle;
+  }
+  
+  if (!Number.isNaN(EditedYear)) {
+    movies[id].year = EditedYear;
+  }
+  
+  response.status(200).send({ status: 200, data: movies });
+});
