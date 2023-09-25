@@ -103,4 +103,12 @@ else  if(!NewRating) {
       res.status(200).json(movies)
 
 })
-
+app.get('/movies/delete/:id', (req,res)=>{
+  const {id}=req.params;
+  if(id>movies.length || id<1){
+      res.status(404).json({status:404, error:true, message:`The movie ${id} does not exist`})
+  } else{
+      movies.splice(id-1, 1);
+      res.status(200).json(movies)
+  }
+})
